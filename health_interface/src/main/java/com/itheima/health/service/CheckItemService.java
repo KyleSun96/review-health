@@ -1,5 +1,7 @@
 package com.itheima.health.service;
 
+import com.itheima.health.entity.PageResult;
+import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.CheckItem;
 
 import java.util.List;
@@ -42,5 +44,13 @@ public interface CheckItemService {
      * @return: void
      */
     public void deleteById(Integer id);
+
+
+    /**
+     * @description: //TODO 检查项分页查询
+     * @param: [queryPageBean]
+     * @return: com.itheima.health.entity.PageResult
+     */
+    PageResult findPage(QueryPageBean queryPageBean);
 
 }

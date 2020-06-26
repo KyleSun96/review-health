@@ -1,6 +1,10 @@
 package com.itheima.health.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.itheima.health.entity.PageResult;
+import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.mapper.CheckItemMapper;
 import com.itheima.health.service.CheckItemService;
 import com.itheima.health.pojo.CheckItem;
@@ -58,6 +62,28 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Override
     public void deleteById(Integer id) {
         checkItemMapper.deleteById(id);
+    }
+
+
+    /**
+     * @description: //TODO 检查项分页查询
+     * @param: [queryPageBean]
+     * @return: com.itheima.health.entity.PageResult
+     */
+    @Override
+    public PageResult findPage(QueryPageBean queryPageBean) {
+
+        Integer currentPage = queryPageBean.getCurrentPage();
+        Integer pageSize = queryPageBean.getPageSize();
+        String queryString = queryPageBean.getQueryString();
+
+        PageHelper.startPage(currentPage, pageSize);
+
+        Page<CheckItem> page = checkItemMapper.selectByCondition(queryString);
+        long total = page.getTotal();
+        List<CheckItem> rows = page.getResult();
+
+        return new PageResult(total, rows);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.itheima.health.mapper;
 
+import com.github.pagehelper.Page;
 import com.itheima.health.pojo.CheckItem;
 
 import java.util.List;
@@ -43,4 +44,11 @@ public interface CheckItemMapper {
      */
     public void deleteById(Integer id);
 
+
+    /**
+     * @description: //TODO 根据条件查询
+     * @param: [queryString]
+     * @return: void
+     */
+    Page<CheckItem> selectByCondition(String queryString);
 }

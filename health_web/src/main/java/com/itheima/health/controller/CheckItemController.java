@@ -1,11 +1,12 @@
 package com.itheima.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.itheima.health.entity.PageResult;
+import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckItemService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,7 +17,9 @@ import java.util.List;
  * @Author: KyleSun
  **/
 @RestController
+@RequestMapping("/checkitem")
 public class CheckItemController {
+
 
     @Reference
     private CheckItemService checkItemService;
@@ -27,16 +30,67 @@ public class CheckItemController {
      * @return: java.util.List<com.itheima.health.pojo.CheckItem>
      */
     @GetMapping("/findAll")
-    public List<CheckItem> findAll() {
-        return checkItemService.findAll();
+    public Result findAll() {
+        List<CheckItem> all = checkItemService.findAll();
+        if (all != null && all.size() != 0) {
+            return new Result(true, "查询成功", all);
+        }
+        return new Result(false, "查询失败");
     }
+
 
     /**
      * @description: //TODO 添加检查项
      * @param: [checkItem]
-     * @return: void
+     * @return: com.itheima.health.entity.Result
      */
-    public void add(CheckItem checkItem) {
-        checkItemService.add(checkItem);
+    @RequestMapping("/add")
+    public Result add(@RequestBody CheckItem checkItem) {
+        try {
+            checkItemService.add(checkItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "添加失败");
+        }
+        return new Result(true, "添加成功");
+    }
+
+    /**
+     * @description: //TODO 修改检查项
+     * @param: [checkItem]
+     * @return: com.itheima.health.entity.Result
+     */
+    @RequestMapping("/edit")
+    public Result edit(@RequestBody CheckItem checkItem) {
+        try {
+            checkItemService.edit(checkItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "编辑失败");
+        }
+        return new Result(true, "编辑成功");
+    }
+
+
+    @RequestMapping("/delete/{id}")
+    public Result delete(@PathVariable("id") Integer id) {
+        try {
+            checkItemService.deleteById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "编辑失败");
+        }
+        return new Result(true, "编辑成功");
+    }
+
+
+    /**
+     * @description: //TODO 检查项分页查询
+     * @param: [queryPageBean]
+     * @return: com.itheima.entity.PageResult
+     */
+    @RequestMapping("/findPage")
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
+        return checkItemService.findPage(queryPageBean);
     }
 }
