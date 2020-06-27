@@ -15,28 +15,28 @@
     <update id="edit" parameterType="com.itheima.health.pojo.CheckItem">
         update t_checkitem
         <set>
-            <if test="name != null and name.length > 0">
+            <if test="name != null and name !=''">
                 name = #{name},
             </if>
-            <if test="sex != null and sex.length > 0">
+            <if test="sex != null and sex !=''">
                 sex = #{sex},
             </if>
-            <if test="code != null and code.length > 0">
+            <if test="code != null and code !=''">
                 code = #{code},
             </if>
-            <if test="age != null and age.length > 0">
+            <if test="age != null and age !=''">
                 age = #{age},
             </if>
-            <if test="price != null and price.length > 0">
+            <if test="price != null and price !=''">
                 price = #{price},
             </if>
-            <if test="type != null and type.length > 0">
+            <if test="type != null and type !=''">
                 type = #{type},
             </if>
-            <if test="attention != null and attention.length > 0">
+            <if test="attention != null and attention !=''">
                 attention = #{attention},
             </if>
-            <if test="remark != null and remark.length > 0">
+            <if test="remark != null and remark !=''">
                 remark = #{remark},
             </if>
         </set>
