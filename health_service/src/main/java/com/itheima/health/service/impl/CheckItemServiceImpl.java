@@ -34,6 +34,18 @@ public class CheckItemServiceImpl implements CheckItemService {
         return checkItemMapper.findAll();
     }
 
+
+    /**
+     * @description: //TODO 根据id查询
+     * @param: [id]
+     * @return: com.itheima.health.pojo.CheckItem
+     */
+    @Override
+    public CheckItem findOne(Integer id) {
+        return checkItemMapper.findOne(id);
+    }
+
+
     /**
      * @description: //TODO 添加检查项
      * @param: [checkItem]
@@ -44,6 +56,7 @@ public class CheckItemServiceImpl implements CheckItemService {
         checkItemMapper.add(checkItem);
     }
 
+
     /**
      * @description: //TODO 修改检查项
      * @param: [checkItem]
@@ -53,6 +66,7 @@ public class CheckItemServiceImpl implements CheckItemService {
     public void edit(CheckItem checkItem) {
         checkItemMapper.edit(checkItem);
     }
+
 
     /**
      * @description: //TODO 删除检查项
@@ -85,5 +99,6 @@ public class CheckItemServiceImpl implements CheckItemService {
 
         return new PageResult(total, rows);
     }
+
 
 }

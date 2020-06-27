@@ -22,6 +22,15 @@ public interface CheckItemMapper {
 
 
     /**
+     * @description: //TODO 根据id查询
+     * @param: [id]
+     * @return: com.itheima.health.pojo.CheckItem
+     */
+    public CheckItem findOne(Integer id);
+
+
+
+    /**
      * @description: //TODO 添加检查项
      * @param: [checkItem]
      * @return: void

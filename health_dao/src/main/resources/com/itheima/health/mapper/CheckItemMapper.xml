@@ -5,7 +5,8 @@
 <mapper namespace="com.itheima.health.mapper.CheckItemMapper">
 
     <!--添加检查项-->
-    <insert id="add" parameterType="com.itheima.health.pojo.CheckItem">
+    <insert id="add" parameterType="com.itheima.health.pojo.CheckItem"
+            useGeneratedKeys="true" keyProperty="id">
         insert into t_checkitem(code,name,sex,age,price,type,remark,attention)
         values  (#{code},#{name},#{sex},#{age},#{price},#{type},#{remark},#{attention})
     </insert>
@@ -14,28 +15,28 @@
     <update id="edit" parameterType="com.itheima.health.pojo.CheckItem">
         update t_checkitem
         <set>
-            <if test="name != null">
+            <if test="name != null and name.length > 0">
                 name = #{name},
             </if>
-            <if test="sex != null">
+            <if test="sex != null and sex.length > 0">
                 sex = #{sex},
             </if>
-            <if test="code != null">
+            <if test="code != null and code.length > 0">
                 code = #{code},
             </if>
-            <if test="age != null">
+            <if test="age != null and age.length > 0">
                 age = #{age},
             </if>
-            <if test="price != null">
+            <if test="price != null and price.length > 0">
                 price = #{price},
             </if>
-            <if test="type != null">
+            <if test="type != null and type.length > 0">
                 type = #{type},
             </if>
-            <if test="attention != null">
+            <if test="attention != null and attention.length > 0">
                 attention = #{attention},
             </if>
-            <if test="remark != null">
+            <if test="remark != null and remark.length > 0">
                 remark = #{remark},
             </if>
         </set>
@@ -43,13 +44,18 @@
     </update>
 
     <!--删除检查项-->
-    <delete id="deleteById" parameterType="int">
+    <delete id="deleteById" parameterType="integer">
         delete from t_checkitem where id = #{id}
     </delete>
 
     <!--查询所有-->
     <select id="findAll" resultType="com.itheima.health.pojo.CheckItem">
         select * from t_checkitem
+    </select>
+
+    <!--根据ID查询检查项-->
+    <select id="findOne" parameterType="integer" resultType="com.itheima.health.pojo.CheckItem">
+         select * from t_checkitem where id = #{id}
     </select>
 
     <!--根据条件查询检查项-->
@@ -59,5 +65,7 @@
             where code like concat('%',#{value},'%') or name like concat('%',#{value},'%')
         </if>
     </select>
+
+
 
 </mapper>

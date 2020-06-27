@@ -51,6 +51,14 @@ public interface CheckItemService {
      * @param: [queryPageBean]
      * @return: com.itheima.health.entity.PageResult
      */
-    PageResult findPage(QueryPageBean queryPageBean);
+    public PageResult findPage(QueryPageBean queryPageBean);
+
+
+    /**
+     * @description: //TODO 根据id查询
+     * @param: [id]
+     * @return: com.itheima.health.pojo.CheckItem
+     */
+    public CheckItem findOne(Integer id);
 
 }

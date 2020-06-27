@@ -13,13 +13,21 @@ import java.util.List;
 /**
  * @Program: Review01_health
  * @ClassName: CheckItemController
- * @Description:
+ * @Description: controller层 接收前端参数多为：JSON、k=v、url
  * @Author: KyleSun
  **/
 @RestController
 @RequestMapping("/checkitem")
 public class CheckItemController {
 
+    /*
+        RestFul风格
+
+        http://localhost:80/checkitem           查询  GET
+        http://localhost:80/checkitem           新增  POST
+        http://localhost:80/checkitem           修改  PUT
+        http://localhost:80/checkitem/{id}      删除  DELETE
+     */
 
     @Reference
     private CheckItemService checkItemService;
@@ -40,6 +48,18 @@ public class CheckItemController {
 
 
     /**
+     * @description: //TODO 根据id查询
+     * @param: []
+     * @return: com.itheima.health.entity.Result
+     */
+    @GetMapping("/{id}")
+    public Result findOne(@PathVariable("id") Integer id) {
+        CheckItem checkItem = checkItemService.findOne(id);
+        return new Result(true, "查询成功", checkItem);
+    }
+
+
+    /**
      * @description: //TODO 添加检查项
      * @param: [checkItem]
      * @return: com.itheima.health.entity.Result
@@ -54,6 +74,7 @@ public class CheckItemController {
         }
         return new Result(true, "添加成功");
     }
+
 
     /**
      * @description: //TODO 修改检查项
@@ -72,6 +93,11 @@ public class CheckItemController {
     }
 
 
+    /**
+     * @description: //TODO 删除检查项
+     * @param: [id]
+     * @return: com.itheima.health.entity.Result
+     */
     @RequestMapping("/delete/{id}")
     public Result delete(@PathVariable("id") Integer id) {
         try {
