@@ -37,7 +37,8 @@ public class CheckItemController {
      * @param: []
      * @return: java.util.List<com.itheima.health.pojo.CheckItem>
      */
-    @GetMapping("/findAll")
+    // @GetMapping("/findAll")
+    @GetMapping
     public Result findAll() {
         List<CheckItem> all = checkItemService.findAll();
         if (all != null && all.size() != 0) {
@@ -60,11 +61,12 @@ public class CheckItemController {
 
 
     /**
-     * @description: //TODO 添加检查项
+     * @description: //TODO 添加检查项，带主键返回
      * @param: [checkItem]
      * @return: com.itheima.health.entity.Result
      */
-    @RequestMapping("/add")
+    // @RequestMapping("/add")
+    @PostMapping
     public Result add(@RequestBody CheckItem checkItem) {
         try {
             checkItemService.add(checkItem);
@@ -81,7 +83,8 @@ public class CheckItemController {
      * @param: [checkItem]
      * @return: com.itheima.health.entity.Result
      */
-    @RequestMapping("/edit")
+    // @RequestMapping("/edit")
+    @PutMapping("/{id}")
     public Result edit(@RequestBody CheckItem checkItem) {
         try {
             checkItemService.edit(checkItem);
@@ -98,7 +101,8 @@ public class CheckItemController {
      * @param: [id]
      * @return: com.itheima.health.entity.Result
      */
-    @RequestMapping("/delete/{id}")
+    // @RequestMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") Integer id) {
         try {
             checkItemService.deleteById(id);
@@ -115,7 +119,8 @@ public class CheckItemController {
      * @param: [queryPageBean]
      * @return: com.itheima.entity.PageResult
      */
-    @RequestMapping("/findPage")
+    // @RequestMapping("/findPage")
+    @PostMapping("/{page}/{size}")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
         return checkItemService.findPage(queryPageBean);
     }
