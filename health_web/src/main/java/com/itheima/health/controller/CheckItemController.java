@@ -2,7 +2,6 @@ package com.itheima.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.entity.PageResult;
-import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckItemService;
@@ -32,6 +31,7 @@ public class CheckItemController {
     @Reference
     private CheckItemService checkItemService;
 
+
     /**
      * @description: //TODO 查询所有
      * @param: []
@@ -40,11 +40,8 @@ public class CheckItemController {
     // @GetMapping("/findAll")
     @GetMapping
     public Result findAll() {
-        List<CheckItem> all = checkItemService.findAll();
-        if (all != null && all.size() != 0) {
-            return new Result(true, "查询成功", all);
-        }
-        return new Result(false, "查询失败");
+        List<CheckItem> checkItemList = checkItemService.findAll();
+        return new Result(true, "查询成功", checkItemList);
     }
 
 
@@ -68,31 +65,21 @@ public class CheckItemController {
     // @RequestMapping("/add")
     @PostMapping
     public Result add(@RequestBody CheckItem checkItem) {
-        try {
-            checkItemService.add(checkItem);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "添加失败");
-        }
-        return new Result(true, "添加成功");
+        CheckItem item = checkItemService.add(checkItem);
+        return new Result(true, "添加成功", item);
     }
 
 
     /**
-     * @description: //TODO 修改检查项
+     * @description: //TODO 修改检查项，限制必须传入ID，以防代码异常
      * @param: [checkItem]
      * @return: com.itheima.health.entity.Result
      */
     // @RequestMapping("/edit")
     @PutMapping("/{id}")
-    public Result edit(@RequestBody CheckItem checkItem) {
-        try {
-            checkItemService.edit(checkItem);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "编辑失败");
-        }
-        return new Result(true, "编辑成功");
+    public Result edit(@PathVariable("id") Integer id, @RequestBody CheckItem checkItem) {
+        CheckItem item = checkItemService.edit(id, checkItem);
+        return new Result(true, "编辑成功", item);
     }
 
 
@@ -104,24 +91,24 @@ public class CheckItemController {
     // @RequestMapping("/delete/{id}")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") Integer id) {
-        try {
-            checkItemService.deleteById(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "编辑失败");
-        }
-        return new Result(true, "编辑成功");
+        checkItemService.deleteById(id);
+        return new Result(true, "删除成功");
     }
 
 
     /**
-     * @description: //TODO 检查项分页查询
+     * @description: //TODO 带条件的分页查询
      * @param: [queryPageBean]
      * @return: com.itheima.entity.PageResult
      */
     // @RequestMapping("/findPage")
     @PostMapping("/{page}/{size}")
-    public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
-        return checkItemService.findPage(queryPageBean);
+    public Result search(@RequestBody CheckItem checkItem,
+                         @PathVariable("page") Integer page,
+                         @PathVariable("size") Integer size) {
+
+        PageResult<CheckItem> result = checkItemService.search(checkItem, page, size);
+        return new Result(true, "分页查询成功", result);
     }
+
 }

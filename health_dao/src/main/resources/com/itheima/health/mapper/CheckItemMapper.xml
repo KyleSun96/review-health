@@ -58,14 +58,21 @@
          select * from t_checkitem where id = #{id}
     </select>
 
-    <!--根据条件查询检查项-->
-    <select id="selectByCondition" resultType="com.itheima.health.pojo.CheckItem" parameterType="string">
+    <!--带条件的分页查询-->
+    <select id="search" resultType="com.itheima.health.pojo.CheckItem"
+            parameterType="com.itheima.health.pojo.CheckItem">
         select * from t_checkitem
-        <if test="value != null and value.length > 0">
-            where code like concat('%',#{value},'%') or name like concat('%',#{value},'%')
-        </if>
+        <where>
+            <if test="code != null and code !=''">
+                AND code = #{code}
+            </if>
+            <if test="name != null and name !=''">
+                AND `name` LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="type != null and type !=''">
+                AND type = #{type}
+            </if>
+        </where>
     </select>
-
-
 
 </mapper>

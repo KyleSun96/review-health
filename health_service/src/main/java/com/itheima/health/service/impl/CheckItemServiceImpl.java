@@ -4,11 +4,12 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.itheima.health.entity.PageResult;
-import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.mapper.CheckItemMapper;
 import com.itheima.health.service.CheckItemService;
 import com.itheima.health.pojo.CheckItem;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ import java.util.List;
  * @Author: KyleSun
  **/
 @Service(interfaceClass = CheckItemService.class)
+@Slf4j
+@Transactional
 public class CheckItemServiceImpl implements CheckItemService {
 
     @Autowired
@@ -52,19 +55,48 @@ public class CheckItemServiceImpl implements CheckItemService {
      * @return: void
      */
     @Override
-    public void add(CheckItem checkItem) {
+    public CheckItem add(CheckItem checkItem) {
+
+        // 参数校验
+        if (checkItem == null || checkItem.getId() == null) {
+            log.error("CheckItemServiceImpl add is error, checkItem={}", checkItem);
+            throw new RuntimeException("新增检查项失败");
+        }
+
+        // 新增成功后，主键封装到checkItem的id属性
         checkItemMapper.add(checkItem);
+
+        return checkItem;
     }
 
 
     /**
-     * @description: //TODO 修改检查项
+     * @description: //TODO 修改检查项，限制必须传入ID，以防代码异常
      * @param: [checkItem]
      * @return: void
      */
     @Override
-    public void edit(CheckItem checkItem) {
+    public CheckItem edit(Integer id, CheckItem checkItem) {
+
+        // 1.参数校验
+        if (id == null) {
+            log.error("CheckItemServiceImpl edit is error, caused By id is null");
+            throw new RuntimeException("主键不能为空");
+        }
+
+        CheckItem item = checkItemMapper.findOne(id);
+        if (item == null) {
+            log.error("CheckItemServiceImpl edit is error, findById is null, id = {}", id);
+            throw new RuntimeException("无当前检查项");
+        }
+
+        // 2.业务处理
+        checkItem.setId(id);
         checkItemMapper.edit(checkItem);
+
+        // 3.结果处理，返回给 Controller
+        return checkItem;
+
     }
 
 
@@ -78,27 +110,33 @@ public class CheckItemServiceImpl implements CheckItemService {
         checkItemMapper.deleteById(id);
     }
 
-
     /**
-     * @description: //TODO 检查项分页查询
-     * @param: [queryPageBean]
+     * @description: //TODO 带条件的分页查询
+     * @param: [checkItem, page, size]
      * @return: com.itheima.health.entity.PageResult
      */
     @Override
-    public PageResult findPage(QueryPageBean queryPageBean) {
+    public PageResult<CheckItem> search(CheckItem checkItem, Integer page, Integer size) {
 
-        Integer currentPage = queryPageBean.getCurrentPage();
-        Integer pageSize = queryPageBean.getPageSize();
-        String queryString = queryPageBean.getQueryString();
+        // 1.参数校验
+        if (page == null) page = 1;
+        if (size == null) size = 10;
 
-        PageHelper.startPage(currentPage, pageSize);
+        // 2.业务处理
+        PageHelper.startPage(page, size);
 
-        Page<CheckItem> page = checkItemMapper.selectByCondition(queryString);
-        long total = page.getTotal();
-        List<CheckItem> rows = page.getResult();
+        Page<CheckItem> result = (Page<CheckItem>) checkItemMapper.search(checkItem);
 
-        return new PageResult(total, rows);
+        long total = result.getTotal();
+        if (total == 0) {
+            log.error("CheckItemServiceImpl edit is error, searchByCheckItem is null");
+            throw new RuntimeException("无符合条件的数据");
+        }
+
+        List<CheckItem> rows = result.getResult();
+        int totalPages = result.getPages();
+
+        return new PageResult<CheckItem>(totalPages, total, rows);
     }
-
 
 }

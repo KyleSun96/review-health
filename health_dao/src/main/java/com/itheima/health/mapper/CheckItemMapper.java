@@ -29,7 +29,6 @@ public interface CheckItemMapper {
     public CheckItem findOne(Integer id);
 
 
-
     /**
      * @description: //TODO 添加检查项
      * @param: [checkItem]
@@ -55,9 +54,10 @@ public interface CheckItemMapper {
 
 
     /**
-     * @description: //TODO 根据条件查询
-     * @param: [queryString]
-     * @return: void
+     * @description: //TODO 带条件的分页查询
+     * @param: [checkItem]
+     * @return: java.util.List<com.itheima.health.pojo.CheckItem>
      */
-    Page<CheckItem> selectByCondition(String queryString);
+    public List<CheckItem> search(CheckItem checkItem);
+
 }

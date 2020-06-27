@@ -1,7 +1,6 @@
 package com.itheima.health.service;
 
 import com.itheima.health.entity.PageResult;
-import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.CheckItem;
 
 import java.util.List;
@@ -23,19 +22,27 @@ public interface CheckItemService {
 
 
     /**
+     * @description: //TODO 根据id查询
+     * @param: [id]
+     * @return: com.itheima.health.pojo.CheckItem
+     */
+    public CheckItem findOne(Integer id);
+
+
+    /**
      * @description: //TODO 添加检查项
      * @param: [checkItem]
      * @return: void
      */
-    public void add(CheckItem checkItem);
+    public CheckItem add(CheckItem checkItem);
 
 
     /**
-     * @description: //TODO 修改检查项
+     * @description: //TODO 修改检查项，限制必须传入ID，以防代码异常
      * @param: [checkItem]
      * @return: void
      */
-    public void edit(CheckItem checkItem);
+    CheckItem edit(Integer id, CheckItem checkItem);
 
 
     /**
@@ -47,18 +54,10 @@ public interface CheckItemService {
 
 
     /**
-     * @description: //TODO 检查项分页查询
-     * @param: [queryPageBean]
+     * @description: //TODO 带条件的分页查询
+     * @param: [checkItem, page, size]
      * @return: com.itheima.health.entity.PageResult
      */
-    public PageResult findPage(QueryPageBean queryPageBean);
-
-
-    /**
-     * @description: //TODO 根据id查询
-     * @param: [id]
-     * @return: com.itheima.health.pojo.CheckItem
-     */
-    public CheckItem findOne(Integer id);
+    PageResult search(CheckItem checkItem, Integer page, Integer size);
 
 }
