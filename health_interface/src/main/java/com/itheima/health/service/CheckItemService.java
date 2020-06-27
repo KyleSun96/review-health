@@ -58,6 +58,6 @@ public interface CheckItemService {
      * @param: [checkItem, page, size]
      * @return: com.itheima.health.entity.PageResult
      */
-    PageResult search(CheckItem checkItem, Integer page, Integer size);
+    PageResult<CheckItem> search(CheckItem checkItem, Integer page, Integer size);
 
 }
